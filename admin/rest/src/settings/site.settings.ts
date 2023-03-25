@@ -2,19 +2,19 @@ import { adminAndOwnerOnly, adminOwnerAndStaffOnly } from '@/utils/auth-utils';
 import { Routes } from '@/config/routes';
 
 export const siteSettings = {
-  name: 'PickBazar',
+  name: 'Supaw Partner',
   description: '',
   logo: {
     url: '/logo.svg',
-    alt: 'PickBazar',
+    alt: 'Supaw Partner',
     href: '/',
     width: 128,
     height: 40,
   },
   defaultLanguage: 'en',
   author: {
-    name: 'RedQ, Inc.',
-    websiteUrl: 'https://redq.io',
+    name: 'Supaw',
+    websiteUrl: 'https://supaw.co',
     address: '',
   },
   headerLinks: [],
@@ -36,11 +36,11 @@ export const siteSettings = {
         label: 'sidebar-nav-item-dashboard',
         icon: 'DashboardIcon',
       },
-      {
-        href: Routes.shop.list,
-        label: 'sidebar-nav-item-shops',
-        icon: 'ShopIcon',
-      },
+      // {
+      //   href: Routes.shop.list,
+      //   label: 'sidebar-nav-item-shops',
+      //   icon: 'ShopIcon',
+      // },
       {
         href: Routes.adminMyShops,
         label: 'sidebar-nav-item-my-shops',
@@ -51,36 +51,36 @@ export const siteSettings = {
         label: 'sidebar-nav-item-products',
         icon: 'ProductsIcon',
       },
-      {
-        href: Routes.attribute.list,
-        label: 'sidebar-nav-item-attributes',
-        icon: 'AttributeIcon',
-      },
-      {
-        href: Routes.type.list,
-        label: 'sidebar-nav-item-groups',
-        icon: 'TypesIcon',
-      },
-      {
-        href: Routes.category.list,
-        label: 'sidebar-nav-item-categories',
-        icon: 'CategoriesIcon',
-      },
-      {
-        href: Routes.tag.list,
-        label: 'sidebar-nav-item-tags',
-        icon: 'TagIcon',
-      },
-      {
-        href: Routes.manufacturer.list,
-        label: 'sidebar-nav-item-manufacturers',
-        icon: 'DiaryIcon',
-      },
-      {
-        href: Routes.author.list,
-        label: 'sidebar-nav-item-authors',
-        icon: 'FountainPenIcon',
-      },
+      // {
+      //   href: Routes.attribute.list,
+      //   label: 'sidebar-nav-item-attributes',
+      //   icon: 'AttributeIcon',
+      // },
+      // {
+      //   href: Routes.type.list,
+      //   label: 'sidebar-nav-item-groups',
+      //   icon: 'TypesIcon',
+      // },
+      // {
+      //   href: Routes.category.list,
+      //   label: 'sidebar-nav-item-categories',
+      //   icon: 'CategoriesIcon',
+      // },
+      // {
+      //   href: Routes.tag.list,
+      //   label: 'sidebar-nav-item-tags',
+      //   icon: 'TagIcon',
+      // },
+      // {
+      //   href: Routes.manufacturer.list,
+      //   label: 'sidebar-nav-item-manufacturers',
+      //   icon: 'DiaryIcon',
+      // },
+      // {
+      //   href: Routes.author.list,
+      //   label: 'sidebar-nav-item-authors',
+      //   icon: 'FountainPenIcon',
+      // },
       {
         href: Routes.order.list,
         label: 'sidebar-nav-item-orders',
@@ -101,31 +101,31 @@ export const siteSettings = {
         label: 'sidebar-nav-item-coupons',
         icon: 'CouponsIcon',
       },
-      {
-        href: Routes.tax.list,
-        label: 'sidebar-nav-item-taxes',
-        icon: 'TaxesIcon',
-      },
-      {
-        href: Routes.shipping.list,
-        label: 'sidebar-nav-item-shippings',
-        icon: 'ShippingsIcon',
-      },
-      {
-        href: Routes.withdraw.list,
-        label: 'sidebar-nav-item-withdraws',
-        icon: 'WithdrawIcon',
-      },
-      {
-        href: Routes.refund.list,
-        label: 'sidebar-nav-item-refunds',
-        icon: 'RefundsIcon',
-      },
-      {
-        href: Routes.question.list,
-        label: 'sidebar-nav-item-questions',
-        icon: 'QuestionIcon',
-      },
+      // {
+      //   href: Routes.tax.list,
+      //   label: 'sidebar-nav-item-taxes',
+      //   icon: 'TaxesIcon',
+      // },
+      // {
+      //   href: Routes.shipping.list,
+      //   label: 'sidebar-nav-item-shippings',
+      //   icon: 'ShippingsIcon',
+      // },
+      // {
+      //   href: Routes.withdraw.list,
+      //   label: 'sidebar-nav-item-withdraws',
+      //   icon: 'WithdrawIcon',
+      // },
+      // {
+      //   href: Routes.refund.list,
+      //   label: 'sidebar-nav-item-refunds',
+      //   icon: 'RefundsIcon',
+      // },
+      // {
+      //   href: Routes.question.list,
+      //   label: 'sidebar-nav-item-questions',
+      //   icon: 'QuestionIcon',
+      // },
       {
         href: Routes.reviews.list,
         label: 'sidebar-nav-item-reviews',

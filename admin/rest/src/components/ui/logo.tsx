@@ -9,6 +9,7 @@ const Logo: React.FC<React.AnchorHTMLAttributes<{}>> = ({
   ...props
 }) => {
   const { logo, siteTitle } = useSettings();
+  console.log(logo);
   return (
     <Link
       href={siteSettings.logo.href}
@@ -23,7 +24,7 @@ const Logo: React.FC<React.AnchorHTMLAttributes<{}>> = ({
         }}
       >
         <Image
-          src={logo?.original ?? siteSettings.logo.url}
+          src={"/logo.svg"}
           alt={siteTitle ?? siteSettings.logo.alt}
           layout="fill"
           objectFit="contain"
