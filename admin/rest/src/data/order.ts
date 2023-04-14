@@ -19,7 +19,7 @@ export const useOrdersQuery = (
   params: Partial<OrderQueryOptions>,
   options: any = {}
 ) => {
-  const { data, error, isLoading } = useQuseuseuery<any>(
+  const { data, error, isLoading } = useQuery<any>(
     [API_ENDPOINTS_V2.STORE_ORDERS, params]
   );
   return {
