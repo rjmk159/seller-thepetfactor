@@ -14,10 +14,8 @@ import { HttpClientV2 } from './http-client-v2';
 
 export const orderClient = {
   ...crudFactory<Order, QueryOptions, CreateOrderInput>(API_ENDPOINTS.ORDERS),
-  get: ({ id, language }: { id: string; language: string }) => {
-    return HttpClient.get<Order>(`${API_ENDPOINTS.ORDERS}/${id}`, {
-      language,
-    });
+  get: ({ id }: { id: string; }) => {
+    return HttpClientV2.get<any>(`${API_ENDPOINTS_V2.STORE_SINGLE_ORDER}${id}`);
   },
   paginated: ({ tracking_number, ...params }: Partial<OrderQueryOptions>) => {
     return HttpClient.get<OrderPaginator>(API_ENDPOINTS.ORDERS, {

@@ -37,6 +37,19 @@ export const useAllOrdersQuery = () => {
 //   return useMutation(orderClient.create);
 // };
 
+export const useOrderQuery = ({ id }: GetParams) => {
+  const { data, error, isLoading } = useQuery<Order, Error>(
+    [API_ENDPOINTS_V2.STORE_SINGLE_ORDER, { id }],
+    () => orderClient.get({ id })
+  );
+
+  return {
+    order: data,
+    error,
+    isLoading,
+  };
+};
+
 export function useCreateOrderMutation() {
   const router = useRouter();
   const { locale } = router;

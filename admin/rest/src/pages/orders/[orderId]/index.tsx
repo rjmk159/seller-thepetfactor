@@ -12,7 +12,11 @@ import { formatAddress } from '@/utils/format-address';
 import Loader from '@/components/ui/loader/loader';
 import ValidationError from '@/components/ui/form-validation-error';
 import { Attachment, OrderStatus, PaymentStatus } from '@/types';
-import { useDownloadInvoiceMutation, useOrderQuery, useUpdateOrderMutation } from '@/data/order';
+import {
+  useDownloadInvoiceMutation,
+  useOrderQuery,
+  useUpdateOrderMutation,
+} from '@/data/order';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import SelectInput from '@/components/ui/select-input';
@@ -46,7 +50,7 @@ export default function OrderDetailsPage() {
     order,
     isLoading: loading,
     error,
-  } = useOrderQuery({ id: query.orderId as string, language: locale! });
+  } = useOrderQuery({ id: query.orderId as string });
   const { refetch } = useDownloadInvoiceMutation(
     {
       order_id: query.orderId as string,
@@ -55,7 +59,7 @@ export default function OrderDetailsPage() {
     },
     { enabled: false }
   );
-
+  console.log('order', order);
   const {
     handleSubmit,
     control,
@@ -114,12 +118,16 @@ export default function OrderDetailsPage() {
 
   const columns = [
     {
-      dataIndex: 'image',
-      key: 'image',
+      dataIndex: 'itemsDetails',
+      key: 'itemsDetails',
       width: 70,
-      render: (image: Attachment) => (
+      render: (itemsDetails: Attachment) => (
         <Image
-          src={image?.thumbnail ?? siteSettings.product.placeholder}
+          src={
+            itemsDetails?.images?.length
+              ? itemsDetails?.images
+              : siteSettings.product.placeholder
+          }
           alt="alt text"
           layout="fixed"
           width={50}
@@ -129,30 +137,50 @@ export default function OrderDetailsPage() {
     },
     {
       title: t('table:table-item-products'),
-      dataIndex: 'name',
-      key: 'name',
+      dataIndex: 'itemsDetails',
+      key: 'itemsDetails',
       align: alignLeft,
-      render: (name: string, item: any) => (
+      width: 400,
+      render: (itemsDetails: any) => (
         <div>
-          <span>{name}</span>
-          <span className="mx-2">x</span>
-          <span className="font-semibold text-heading">
-            {item.pivot.order_quantity}
-          </span>
+          <span>{itemsDetails?.productName}</span>
         </div>
       ),
     },
     {
-      title: t('table:table-item-total'),
-      dataIndex: 'price',
-      key: 'price',
+      title: 'Quantity',
+      dataIndex: 'quantity',
+      key: 'quantity',
+      align: alignLeft,
+      render: (quantity: any) => (
+        <div>
+          <span className="mx-2">x</span>
+          <span className="font-semibold text-heading">{quantity}</span>
+        </div>
+      ),
+    },
+    {
+      title: 'Price',
+      dataIndex: 'itemsDetails',
+      key: 'itemsDetails',
       align: alignRight,
-      render: function Render(_: any, item: any) {
-        const { price } = usePrice({
-          amount: parseFloat(item.pivot.subtotal),
-        });
-        return <span>{price}</span>;
-      },
+      render: (itemsDetails: any) => (
+        <span className="font-semibold text-heading">
+          {itemsDetails?.price}
+        </span>
+      ),
+    },
+    {
+      title: t('table:table-item-total'),
+
+      dataIndex: 'itemsDetails',
+      key: 'itemsDetails',
+      align: alignRight,
+      render: (itemsDetails: any) => (
+        <span className="font-semibold text-heading">
+          {itemsDetails?.price}
+        </span>
+      ),
     },
   ];
 
@@ -160,28 +188,28 @@ export default function OrderDetailsPage() {
     <>
       <Card className="relative overflow-hidden">
         <div className="mb-6 -mt-5 -ml-5 -mr-5 md:-mr-8 md:-ml-8 md:-mt-8">
-          <OrderViewHeader order={order} wrapperClassName="px-8 py-4" />
+          <OrderViewHeader order={order?.data?.result} wrapperClassName="px-8 py-4" />
         </div>
-        <div className="flex w-full">
+        {/* <div className="flex w-full">
           <Button
             onClick={handleDownloadInvoice}
             className="mb-5 bg-blue-500 ltr:ml-auto rtl:mr-auto"
           >
-            <DownloadIcon className="w-4 h-4 me-3" />
+            <DownloadIcon className="h-4 w-4 me-3" />
             {t('common:text-download')} {t('common:text-invoice')}
           </Button>
-        </div>
+        </div> */}
 
         <div className="flex flex-col items-center lg:flex-row">
-          <h3 className="w-full mb-8 text-2xl font-semibold text-center whitespace-nowrap text-heading lg:mb-0 lg:w-1/3 lg:text-start">
-            {t('form:input-label-order-id')} - {order?.tracking_number}
+          <h3 className="mb-8 w-full whitespace-nowrap text-center text-sm font-semibold text-heading lg:mb-0 lg:w-1/3 lg:text-start">
+            {t('form:input-label-order-id')} - #{order?.data?.result?._id}
           </h3>
 
           {order?.order_status !== OrderStatus.FAILED &&
             order?.order_status !== OrderStatus.CANCELLED && (
               <form
                 onSubmit={handleSubmit(ChangeStatus)}
-                className="flex items-start w-full ms-auto lg:w-2/4"
+                className="flex w-full items-start ms-auto lg:w-2/4"
               >
                 <div className="z-20 w-full me-5">
                   <SelectInput
@@ -207,7 +235,7 @@ export default function OrderDetailsPage() {
             )}
         </div>
 
-        <div className="flex items-center justify-center my-5 lg:my-10">
+        <div className="my-5 flex items-center justify-center lg:my-10">
           <OrderStatusProgressBox
             orderStatus={order?.order_status as OrderStatus}
             paymentStatus={order?.payment_status as PaymentStatus}
@@ -220,7 +248,7 @@ export default function OrderDetailsPage() {
               //@ts-ignore
               columns={columns}
               emptyText={t('table:empty-table-data')}
-              data={order?.products!}
+              data={order?.data?.result?.items}
               rowKey="id"
               scroll={{ x: 300 }}
             />
@@ -228,49 +256,49 @@ export default function OrderDetailsPage() {
             <span>{t('common:no-order-found')}</span>
           )}
 
-          <div className="flex flex-col w-full px-4 py-4 space-y-2 border-t-4 border-double border-border-200 ms-auto sm:w-1/2 md:w-1/3">
+          <div className="flex w-full flex-col space-y-2 border-t-4 border-double border-border-200 px-4 py-4 ms-auto sm:w-1/2 md:w-1/3">
             <div className="flex items-center justify-between text-sm text-body">
               <span>{t('common:order-sub-total')}</span>
-              <span>{subtotal}</span>
+              <span>{order?.data?.result?.totalAmount}</span>
             </div>
-            <div className="flex items-center justify-between text-sm text-body">
+            {/* <div className="flex items-center justify-between text-sm text-body">
               <span>{t('common:order-tax')}</span>
               <span>{sales_tax}</span>
-            </div>
+            </div> */}
             <div className="flex items-center justify-between text-sm text-body">
               <span>{t('common:order-delivery-fee')}</span>
-              <span>{delivery_fee}</span>
+              <span>{order?.data?.result?.deliveryFee}</span>
             </div>
             <div className="flex items-center justify-between text-sm text-body">
               <span>{t('common:order-discount')}</span>
-              <span>{discount}</span>
+              <span>{order?.data?.result?.discountAmount}</span>
             </div>
             <div className="flex items-center justify-between text-base font-semibold text-heading">
               <span>{t('common:order-total')}</span>
-              <span>{total}</span>
+              <span>{order?.data?.result?.grandTotal}</span>
             </div>
           </div>
         </div>
 
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between">
-          <div className="w-full mb-10 sm:mb-0 sm:w-1/2 sm:pe-8">
-            <h3 className="pb-2 mb-3 font-semibold border-b border-border-200 text-heading">
-              {t('common:billing-address')}
+          <div className="mb-10 w-full sm:mb-0 sm:w-1/2 sm:pe-8">
+            <h3 className="mb-3 border-b border-border-200 pb-2 font-semibold text-heading">
+              {t('common:shipping-address')}
             </h3>
 
             <div className="flex flex-col items-start space-y-1 text-sm text-body">
-              <span>{order?.customer_name}</span>
-              {order?.billing_address && (
-                <span>{formatAddress(order.billing_address)}</span>
-              )}
-              {order?.customer_contact && (
-                <span>{order?.customer_contact}</span>
+              <span>{order?.data?.result?.addressId?.address}</span>
+              {/* {order?.data?.result?.addressId?.address && (
+                <span>{formatAddress(order?.data?.result?.addressId?.address)}</span>
+              )} */}
+              {order?.data?.result?.addressId?.phone && (
+                <span>{order?.data?.result?.addressId?.phone}</span>
               )}
             </div>
           </div>
 
-          <div className="w-full sm:w-1/2 sm:ps-8">
-            <h3 className="pb-2 mb-3 font-semibold border-b border-border-200 text-heading text-start sm:text-end">
+          {/* <div className="w-full sm:w-1/2 sm:ps-8">
+            <h3 className="mb-3 border-b border-border-200 pb-2 font-semibold text-heading text-start sm:text-end">
               {t('common:shipping-address')}
             </h3>
 
@@ -283,7 +311,7 @@ export default function OrderDetailsPage() {
                 <span>{order?.customer_contact}</span>
               )}
             </div>
-          </div>
+          </div> */}
         </div>
       </Card>
     </>

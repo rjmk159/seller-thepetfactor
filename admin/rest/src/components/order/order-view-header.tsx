@@ -18,9 +18,9 @@ export default function OrderViewHeader({
   buttonSize = 'medium',
 }: OrderViewHeaderProps) {
   const { t } = useTranslation('common');
-  const isPaymentCOD = [PaymentGateway.COD, PaymentGateway.CASH].includes(order?.payment_gateway);
-  const isOrderPending = ![OrderStatus.CANCELLED, OrderStatus.FAILED].includes(order?.order_status);
-  const isPaymentActionPending = !isPaymentCOD && isOrderPending && order?.payment_status !== PaymentStatus.SUCCESS;
+  const isPaymentCOD = [PaymentGateway.COD, PaymentGateway.CASH].includes(order?.paymentType);
+  const isOrderPending = ![OrderStatus.CANCELLED, OrderStatus.FAILED].includes(order?.status);
+  const isPaymentActionPending = !isPaymentCOD && isOrderPending && order?.paymentType !== PaymentStatus.SUCCESS;
 
   return (
     <div className={cn(`bg-[#F7F8FA] ${wrapperClassName}`)}>
@@ -33,15 +33,16 @@ export default function OrderViewHeader({
           }`}
         >
           <div>
-            <span className="mb-2 block lg:mb-0 lg:inline-block lg:ltr:mr-4 lg:rtl:ml-4">
+            <span className="mb-2 block lg:mb-0 lg:inline-block lg:ltr:mr-4 lg:rtl:ml-4 ">
               {t('text-order-status')} :
             </span>
             <Badge
-              text={t(order?.order_status)}
-              color={StatusColor(order?.order_status)}
+              text={t(order?.status)}
+              className='capitalize'
+              color={StatusColor(order?.status)}
             />
           </div>
-          <div>
+          {/* <div>
             <span className="mb-2 block lg:mb-0 lg:inline-block lg:ltr:mr-4 lg:rtl:ml-4">
               {t('text-payment-status')} :
             </span>
@@ -49,7 +50,7 @@ export default function OrderViewHeader({
               text={t(order?.payment_status)}
               color={StatusColor(order?.payment_status)}
             />
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

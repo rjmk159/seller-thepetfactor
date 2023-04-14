@@ -38,7 +38,9 @@ export default function LanguageSwitcher({
           id={record?.id}
           editUrl={routes.editWithoutLang(slug, shop)}
           deleteModalView={deleteModalView}
+          detailsUrl={routes.details(slug)}
         />
+
       )}
     </>
   );

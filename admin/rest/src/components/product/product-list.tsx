@@ -237,13 +237,13 @@ const ProductList = ({
     },
     {
       title: t('table:table-item-actions'),
-      dataIndex: 'slug',
-      key: 'actions',
+      dataIndex: '_id',
+      key: '_id',
       align: 'right',
-      width: 120,
-      render: (slug: string, record: Product) => (
+      width: 180,
+      render: (_id: string, record: Product) => (
         <LanguageSwitcher
-          slug={slug}
+          slug={_id}
           record={record}
           deleteModalView="DELETE_PRODUCT"
           routes={Routes?.product}

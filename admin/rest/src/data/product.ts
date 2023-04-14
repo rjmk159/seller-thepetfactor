@@ -2,7 +2,7 @@ import Router, { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
 import { useTranslation } from 'next-i18next';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
-import { API_ENDPOINTS } from '@/data/client/api-endpoints';
+import { API_ENDPOINTS, API_ENDPOINTS_V2 } from '@/data/client/api-endpoints';
 import { productClient } from './client/product';
 import {
   ProductQueryOptions,
@@ -70,14 +70,30 @@ export const useDeleteProductMutation = () => {
   });
 };
 
-export const useProductQuery = ({ slug, language }: GetParams) => {
-  const { data, error, isLoading } = useQuery<Product, Error>(
-    [API_ENDPOINTS.PRODUCTS, { slug, language }],
-    () => productClient.get({ slug, language })
-  );
+// export const useProductQuery = ({ slug, language }: GetParams) => {
+//   const { data, error, isLoading } = useQuery<Product, Error>(
+//     [API_ENDPOINTS.PRODUCTS, { slug, language }],
+//     () => productClient.get({ slug, language })
+//   );
 
+//   return {
+//     product: data,
+//     error,
+//     isLoading,
+//   };
+// };
+
+export const useProductQuery = ({
+  id,
+}: {
+  id: string;
+}) => {
+  const { data, error, isLoading } = useQuery<Product, Error>(
+    [API_ENDPOINTS_V2.SINGLE_PRODUCT, { id }],
+    () => productClient.get({ id })
+  );
   return {
-    product: data,
+    order: data,
     error,
     isLoading,
   };

@@ -23,7 +23,7 @@ export enum ProductType {
 
 export enum PaymentGateway {
   STRIPE = 'STRIPE',
-  COD = 'CASH_ON_DELIVERY',
+  COD = 'cod',
   CASH = 'CASH',
   FULL_WALLET_PAYMENT = 'FULL_WALLET_PAYMENT',
   PAYPAL = 'PAYPAL',
@@ -65,10 +65,10 @@ export type QueryOptionsType = {
 };
 
 export enum OrderStatus {
-  PENDING = 'order-pending',
+  PENDING = 'pending',
   PROCESSING = 'order-processing',
-  COMPLETED = 'order-completed',
-  CANCELLED = 'order-cancelled',
+  COMPLETED = 'completed',
+  CANCELLED = 'cancelled',
   REFUNDED = 'order-refunded',
   FAILED = 'order-failed',
   AT_LOCAL_FACILITY = 'order-at-local-facility',

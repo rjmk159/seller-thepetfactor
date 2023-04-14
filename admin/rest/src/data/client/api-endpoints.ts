@@ -59,7 +59,9 @@ export const API_ENDPOINTS = {
 export const API_ENDPOINTS_V2 = {
   NORMAL_LOGIN: 'api/vet/v1/loginNormalUser',
   PRODUCTS: 'api/Product/v1/getAllProductsByStoreId',
+  SINGLE_PRODUCT: 'api/Product/v1/getProductById/',
   ME: 'api/vet/v1/getUser',
   STORES: 'api/stores/v1/getSellerAllStores',
-  STORE_ORDERS: 'api/Orders/v1/fetchStoreOrdersById/'
+  STORE_ORDERS: 'api/Orders/v1/fetchStoreOrdersById/',
+  STORE_SINGLE_ORDER: 'api/Orders/v1/getOrderById/'
 };  
