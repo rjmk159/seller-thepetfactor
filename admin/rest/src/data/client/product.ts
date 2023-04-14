@@ -5,10 +5,13 @@ import {
   QueryOptions,
   GetParams,
   ProductQueryOptions,
+  StoreInput,
+  ProductInput,
 } from '@/types';
-import { API_ENDPOINTS } from './api-endpoints';
+import { API_ENDPOINTS, API_ENDPOINTS_V2 } from './api-endpoints';
 import { crudFactory } from './curd-factory';
 import { HttpClient } from './http-client';
+import { HttpClientV2 } from './http-client-v2';
 
 export const productClient = {
   ...crudFactory<Product, QueryOptions, CreateProduct>(API_ENDPOINTS.PRODUCTS),
@@ -44,5 +47,9 @@ export const productClient = {
       ...params,
       search: HttpClient.formatSearchParams({ shop_id }),
     });
+  },
+  getProducts(variables: ProductInput) {
+    console.log(variables);
+    return HttpClientV2.post<any>(API_ENDPOINTS_V2.PRODUCTS, variables);
   },
 };

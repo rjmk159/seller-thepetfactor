@@ -95,3 +95,7 @@ export const useShopsQuery = (options: Partial<ShopQueryOptions>) => {
     loading: isLoading,
   };
 };
+
+export const useStoreQuery = () => {
+  return useMutation(shopClient.getStores);
+};

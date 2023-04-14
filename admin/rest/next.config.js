@@ -23,6 +23,8 @@ const nextConfig = {
       'pickbazar-sail.test',
       'pickbazarlaravel.s3.ap-southeast-1.amazonaws.com',
       'lh3.googleusercontent.com',
+      'akpl-tpf-products.s3.ap-south-1.amazonaws.com',
+      '*'
     ],
   },
   ...(process.env.APPLICATION_MODE === 'production' && {

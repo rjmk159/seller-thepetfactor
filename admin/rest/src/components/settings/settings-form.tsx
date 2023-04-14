@@ -225,7 +225,6 @@ export default function SettingsForm({
         },
       },
     });
-    console.log(values, 'valuess');
   }
 
   const paymentGateway = watch('paymentGateway');

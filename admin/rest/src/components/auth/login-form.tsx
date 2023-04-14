@@ -16,6 +16,7 @@ import {
   hasAccess,
   setAuthCredentials,
 } from '@/utils/auth-utils';
+import { SELLER_ROLE } from '../../Constants';
 
 const loginFormSchema = yup.object().shape({
   email: yup
@@ -35,21 +36,27 @@ const LoginForm = () => {
       {
         email,
         password,
+        role: SELLER_ROLE,
       },
       {
         onSuccess: (data) => {
-          if (data?.token) {
-            if (hasAccess(allowedRoles, data?.permissions)) {
-              setAuthCredentials(data?.token, data?.permissions);
-              Router.push(Routes.dashboard);
-              return;
-            }
-            setErrorMessage('form:error-enough-permission');
+          if (data?.status === 1) {
+
+            setAuthCredentials(
+              `${data.data.token}`,
+              [data.data.role],
+              data.data._id
+            );
+            Router.push(Routes.dashboard);
+            return;
           } else {
             setErrorMessage('form:error-credential-wrong');
           }
         },
-        onError: () => {},
+        onError: (error: any) => {
+          setErrorMessage(error?.response?.data?.message);
+
+        },
       }
     );
   }
@@ -69,7 +76,7 @@ const LoginForm = () => {
             />
             <PasswordInput
               label={t('form:input-label-password')}
-              forgotPassHelpText={t('form:input-forgot-password-label')}
+              // forgotPassHelpText={t('form:input-forgot-password-label')}
               {...register('password')}
               error={t(errors?.password?.message!)}
               variant="outline"
@@ -87,7 +94,7 @@ const LoginForm = () => {
               </span>
             </div>
 
-            <div className="text-center text-sm text-body sm:text-base">
+            {/* <div className="text-center text-sm text-body sm:text-base">
               {t('form:text-no-account')}{' '}
               <Link
                 href={Routes.register}
@@ -95,7 +102,7 @@ const LoginForm = () => {
               >
                 {t('form:link-register-shop-owner')}
               </Link>
-            </div>
+            </div> */}
           </>
         )}
       </Form>

@@ -2,10 +2,10 @@ import Card from '@/components/common/card';
 import Layout from '@/components/layouts/admin';
 import Search from '@/components/common/search';
 import OrderList from '@/components/order/order-list';
-import { Fragment, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import ErrorMessage from '@/components/ui/error-message';
 import Loader from '@/components/ui/loader/loader';
-import { useOrdersQuery } from '@/data/order';
+import { useAllOrdersQuery, useOrdersQuery } from '@/data/order';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { SortOrder } from '@/types';
@@ -17,6 +17,7 @@ import { useShopQuery } from '@/data/shop';
 import { Menu, Transition } from '@headlessui/react';
 import classNames from 'classnames';
 import { DownloadIcon } from '@/components/icons/download-icon';
+import { useStore } from '@/contexts/storeConfig.context';
 
 export default function Orders() {
   const router = useRouter();
@@ -29,7 +30,7 @@ export default function Orders() {
   const { t } = useTranslation();
   const [orderBy, setOrder] = useState('created_at');
   const [sortedBy, setColumn] = useState<SortOrder>(SortOrder.Desc);
-
+  const { currentStore } = useStore();
   function handleSearch({ searchText }: { searchText: string }) {
     setSearchTerm(searchText);
     setPage(1);
@@ -47,19 +48,15 @@ export default function Orders() {
       enabled: !!shop,
     }
   );
-  const shopId = shopData?.id!;
-  const { orders, loading, paginatorInfo, error } = useOrdersQuery({
-    language: locale,
-    limit: 20,
-    page,
-    tracking_number: searchTerm,
-  });
-  const { refetch } = useExportOrderQuery(
-    {
-      ...(shopId && { shop_id: shopId }),
-    },
-    { enabled: false }
-  );
+  const shopId = currentStore?._id!;
+
+  const { mutate, isLoading: loading, error, data } = useAllOrdersQuery();
+
+  useEffect(() => {
+    mutate({ id: shopId });
+  }, []);
+
+  console.log('data', data);
 
   if (loading) return <Loader text={t('common:text-loading')} />;
 
@@ -67,14 +64,13 @@ export default function Orders() {
   if (error) return <ErrorMessage message={error.message} />;
 
   async function handleExportOrder() {
-    const { data } = await refetch();
-
-    if (data) {
-      const a = document.createElement('a');
-      a.href = data;
-      a.setAttribute('download', 'export-order');
-      a.click();
-    }
+    // const { data } = await refetch();
+    // if (data) {
+    //   const a = document.createElement('a');
+    //   a.href = data;
+    //   a.setAttribute('download', 'export-order');
+    //   a.click();
+    // }
   }
 
   return (
@@ -90,7 +86,7 @@ export default function Orders() {
           <Search onSearch={handleSearch} />
         </div>
 
-        <Menu
+        {/* <Menu
           as="div"
           className="relative inline-block ltr:text-left rtl:text-right"
         >
@@ -130,13 +126,11 @@ export default function Orders() {
               </Menu.Item>
             </Menu.Items>
           </Transition>
-        </Menu>
+        </Menu> */}
       </Card>
 
       <OrderList
-        orders={orders}
-        paginatorInfo={paginatorInfo}
-        onPagination={handlePagination}
+        orders={data?.data}
         onOrder={setOrder}
         onSort={setColumn}
       />

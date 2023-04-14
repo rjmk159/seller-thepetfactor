@@ -128,11 +128,16 @@ export interface PaginatorInfo<T> {
 export interface LoginInput {
   email: string;
   password: string;
+  role: string
+}
+
+export interface UserInput {
+  userId: string;
 }
 
 export interface AuthResponse {
-  token: string;
-  permissions: string[];
+  data: any;
+  status: number;
 }
 
 export interface Type {
@@ -1056,6 +1061,12 @@ export declare type ApproveShopInput = {
   id: string;
   admin_commission_rate: number;
 };
+export declare type StoreInput = {
+  sellerId: string;
+};
+export declare type ProductInput = {
+  storeId: string;
+};
 
 export interface LocationInput {
   lat?: number;
@@ -1239,10 +1250,9 @@ export interface WithdrawQueryOptions extends Omit<QueryOptions, 'language'> {
 }
 
 export interface OrderQueryOptions extends QueryOptions {
-  type: string;
-  name: string;
-  shop_id: string;
-  tracking_number: string;
+
+  id: string;
+
 }
 
 export interface CouponQueryOptions extends QueryOptions {

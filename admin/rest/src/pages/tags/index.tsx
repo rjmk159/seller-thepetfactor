@@ -8,7 +8,7 @@ import Loader from '@/components/ui/loader/loader';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import TagList from '@/components/tag/tag-list';
-import { adminOnly } from '@/utils/auth-utils';
+import { sellerOnly } from '@/utils/auth-utils';
 import { SortOrder } from '@/types';
 import { Routes } from '@/config/routes';
 import { useTagsQuery } from '@/data/tag';
@@ -86,7 +86,7 @@ export default function Tags() {
   );
 }
 Tags.authenticate = {
-  permissions: adminOnly,
+  permissions: sellerOnly,
 };
 Tags.Layout = Layout;
 

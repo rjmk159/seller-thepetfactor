@@ -6,8 +6,8 @@ import ProductList from '@/components/product/product-list';
 import ErrorMessage from '@/components/ui/error-message';
 import Loader from '@/components/ui/loader/loader';
 import { SortOrder } from '@/types';
-import { useState } from 'react';
-import { useProductsQuery } from '@/data/product';
+import { useEffect, useState } from 'react';
+import { useAllProductQuery, useProductsQuery } from '@/data/product';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import CategoryTypeFilter from '@/components/product/category-type-filter';
@@ -15,6 +15,7 @@ import cn from 'classnames';
 import { ArrowDown } from '@/components/icons/arrow-down';
 import { ArrowUp } from '@/components/icons/arrow-up';
 import { adminOnly } from '@/utils/auth-utils';
+import { useStore } from '@/contexts/storeConfig.context';
 
 export default function ProductsPage() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -26,21 +27,18 @@ export default function ProductsPage() {
   const [orderBy, setOrder] = useState('created_at');
   const [sortedBy, setColumn] = useState<SortOrder>(SortOrder.Desc);
   const [visible, setVisible] = useState(false);
+  const {currentStore} = useStore()
 
   const toggleVisible = () => {
     setVisible((v) => !v);
   };
 
-  const { products, loading, paginatorInfo, error } = useProductsQuery({
-    language: locale,
-    limit: 20,
-    page,
-    type,
-    categories: category,
-    name: searchTerm,
-    orderBy,
-    sortedBy,
-  });
+  const { mutate, isLoading: loading, error, data } = useAllProductQuery();
+
+  useEffect(() => {
+    mutate({ storeId: currentStore?._id });
+  }, []);
+
 
   if (loading) return <Loader text={t('common:text-loading')} />;
   if (error) return <ErrorMessage message={error.message} />;
@@ -56,7 +54,7 @@ export default function ProductsPage() {
 
   return (
     <>
-      <Card className="mb-8 flex flex-col">
+      {/* <Card className="mb-8 flex flex-col">
         <div className="flex w-full flex-col items-center md:flex-row">
           <div className="mb-4 md:mb-0 md:w-1/4">
             <h1 className="text-lg font-semibold text-heading">
@@ -101,10 +99,10 @@ export default function ProductsPage() {
             />
           </div>
         </div>
-      </Card>
+      </Card> */}
       <ProductList
-        products={products}
-        paginatorInfo={paginatorInfo}
+        products={data?.data}
+        // paginatorInfo={paginatorInfo}
         onPagination={handlePagination}
         onOrder={setOrder}
         onSort={setColumn}

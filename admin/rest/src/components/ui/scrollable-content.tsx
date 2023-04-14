@@ -17,8 +17,7 @@ export const ScrollContent: React.FC<Props> = ({
 }) => {
   const scrollDiv = selector;
 
-  console.log(document!.querySelector(selector)!.scrollWidth);
-  console.log(document!.querySelector(selector)!.clientWidth);
+
 
   useLayoutEffect(() => {
     const handleScroll = () => {
@@ -36,7 +35,7 @@ export const ScrollContent: React.FC<Props> = ({
       if (isRightShowAble) {
         document!.querySelector('.rightArrow')!.classList.add('block');
         document!.querySelector('.rightArrow')!.classList.remove('hidden');
-        console.log('isRightShowAble = true');
+
       } else {
         document!.querySelector('.rightArrow')!.classList.add('hidden');
         document!.querySelector('.rightArrow')!.classList.remove('block');
@@ -45,7 +44,7 @@ export const ScrollContent: React.FC<Props> = ({
       if (isLeftShowAble) {
         document!.querySelector('.leftArrow')!.classList.add('block');
         document!.querySelector('.leftArrow')!.classList.remove('hidden');
-        console.log('isLeftShowAble = true');
+
       } else {
         document!.querySelector('.leftArrow')!.classList.add('hidden');
         document!.querySelector('.leftArrow')!.classList.remove('block');
@@ -64,7 +63,7 @@ export const ScrollContent: React.FC<Props> = ({
         className="hidden min-h-full leftArrow vertical-scroll-arrow left absolute start-0 top-0 w-4 h-4 bg-red-500"
         onClick={() => {
           document!.querySelector(scrollDiv)!.scrollLeft -= 20;
-          console.log('clicked prev');
+
         }}
       >
         {/* <img src={PrevIcon} /> */}

@@ -1,10 +1,12 @@
 export const LIMIT = 10;
 export const SUPER_ADMIN = 'super_admin';
 export const STORE_OWNER = 'store_owner';
+export const SELLER = 'seller';
 export const STAFF = 'staff';
 export const TOKEN = 'token';
 export const PERMISSIONS = 'permissions';
-export const AUTH_CRED = 'AUTH_CRED';
+export const AUTH_CRED = 'SUPAW_AUTH_CRED';
+export const SUPAW_CURRENT_STORE = 'SUPAW_CURRENT_STORE';
 export const CART_KEY = 'pick-cart';
 export const CHECKOUT = 'pickbazar-checkout';
 // https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types

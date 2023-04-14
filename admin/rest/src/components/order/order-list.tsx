@@ -19,19 +19,13 @@ import Badge from '@/components/ui/badge/badge';
 
 type IProps = {
   orders: Order[] | undefined;
-  paginatorInfo: MappedPaginatorInfo | null;
-  onPagination: (current: number) => void;
+    // paginatorInfo: MappedPaginatorInfo | null;
+    // onPagination: (current: number) => void;
   onSort: (current: any) => void;
   onOrder: (current: string) => void;
 };
 
-const OrderList = ({
-  orders,
-  paginatorInfo,
-  onPagination,
-  onSort,
-  onOrder,
-}: IProps) => {
+const OrderList = ({ orders, onSort, onOrder }: IProps) => {
   // const { data, paginatorInfo } = orders! ?? {};
   const router = useRouter();
   const { t } = useTranslation();
@@ -64,40 +58,68 @@ const OrderList = ({
   const columns = [
     {
       title: t('table:table-item-tracking-number'),
-      dataIndex: 'tracking_number',
-      key: 'tracking_number',
-      align: 'center',
-      width: 150,
+      dataIndex: '_id',
+      key: '_id',
+      align: alignLeft,
+      width: 230,
     },
     {
-      title: t('table:table-item-delivery-fee'),
-      dataIndex: 'delivery_fee',
-      key: 'delivery_fee',
-      align: 'center',
+      title: 'Discount',
+      dataIndex: 'discountAmount',
+      key: 'discountAmount',
+      align: alignLeft,
       render: function Render(value: any) {
-        const delivery_fee = value ? value : 0;
+        const discountAmount = value ? value : 0;
         const { price } = usePrice({
-          amount: delivery_fee,
+          amount: discountAmount,
         });
         return <span>{price}</span>;
       },
     },
+
+    {
+      title: t('table:table-item-delivery-fee'),
+      dataIndex: 'deliveryFee',
+      key: 'deliveryFee',
+      align: alignLeft,
+      render: function Render(value: any) {
+        const deliveryFee = value ? value : 0;
+        const { price } = usePrice({
+          amount: deliveryFee,
+        });
+        return <span>{price}</span>;
+      },
+    },
+    // {
+    //   title: 'Total',
+    //   dataIndex: 'totalAmount',
+    //   key: 'totalAmount',
+    //   align: 'center',
+    //   width: 120,
+    //   render: function Render(value: any) {
+    //     const totalAmount = value ? value : 0;
+    //     const { price } = usePrice({
+    //       amount: totalAmount,
+    //     });
+    //     return <span>{price}</span>;
+    //   },
+    // },
     {
       title: (
         <TitleWithSort
-          title={t('table:table-item-total')}
+          title={"G. Total"}
           ascending={
-            sortingObj.sort === SortOrder.Asc && sortingObj.column === 'total'
+            sortingObj.sort === SortOrder.Asc && sortingObj.column === 'grandTotal'
           }
-          isActive={sortingObj.column === 'total'}
+          isActive={sortingObj.column === 'grandTotal'}
         />
       ),
       className: 'cursor-pointer',
-      dataIndex: 'total',
-      key: 'total',
-      align: 'center',
+      dataIndex: 'grandTotal',
+      key: 'grandTotal',
+      align: alignLeft,
       width: 120,
-      onHeaderCell: () => onHeaderClick('total'),
+      onHeaderCell: () => onHeaderClick('grandTotal'),
       render: function Render(value: any) {
         const { price } = usePrice({
           amount: value,
@@ -119,7 +141,7 @@ const OrderList = ({
       className: 'cursor-pointer',
       dataIndex: 'created_at',
       key: 'created_at',
-      align: 'center',
+      align: alignLeft,
       onHeaderCell: () => onHeaderClick('created_at'),
       render: (date: string) => {
         dayjs.extend(relativeTime);
@@ -134,33 +156,33 @@ const OrderList = ({
     },
     {
       title: t('table:table-item-status'),
-      dataIndex: 'order_status',
-      key: 'order_status',
+      dataIndex: 'status',
+      key: 'status',
       align: alignLeft,
       render: (order_status: string) => (
         <Badge text={t(order_status)} color={StatusColor(order_status)} />
       ),
     },
-    {
-      title: t('table:table-item-shipping-address'),
-      dataIndex: 'shipping_address',
-      key: 'shipping_address',
-      align: alignLeft,
-      render: (shipping_address: UserAddress) => (
-        <div>{formatAddress(shipping_address)}</div>
-      ),
-    },
+    // {
+    //   title: t('table:table-item-shipping-address'),
+    //   dataIndex: 'shipping_address',
+    //   key: 'shipping_address',
+    //   align: alignLeft,
+    //   render: (shipping_address: UserAddress) => (
+    //     <div>{formatAddress(shipping_address)}</div>
+    //   ),
+    // },
     {
       title: t('table:table-item-actions'),
-      dataIndex: 'id',
+      dataIndex: '_id',
       key: 'actions',
       align: 'center',
       width: 100,
-      render: (id: string, order: Order) => {
+      render: (_id: string, order: Order) => {
         return (
           <ActionButtons
-            id={id}
-            detailsUrl={`${router.asPath}/${id}`}
+            id={_id}
+            detailsUrl={`${router.asPath}/${_id}`}
             customLocale={order.language}
           />
         );
@@ -177,7 +199,7 @@ const OrderList = ({
           emptyText={t('table:empty-table-data')}
           data={orders}
           rowKey="id"
-          scroll={{ x: 1000 }}
+          scroll={{ x: 700 }}
           expandable={{
             expandedRowRender: () => '',
             rowExpandable: rowExpandable,
@@ -185,7 +207,7 @@ const OrderList = ({
         />
       </div>
 
-      {!!paginatorInfo?.total && (
+      {/* {!!paginatorInfo?.total && (
         <div className="flex items-center justify-end">
           <Pagination
             total={paginatorInfo?.total}
@@ -194,7 +216,7 @@ const OrderList = ({
             onChange={onPagination}
           />
         </div>
-      )}
+      )} */}
     </>
   );
 };

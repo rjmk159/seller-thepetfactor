@@ -21,7 +21,7 @@ import LanguageSwitcher from '@/components/ui/lang-action/action';
 
 export type IProps = {
   products: Product[] | undefined;
-  paginatorInfo: MappedPaginatorInfo | null;
+  // paginatorInfo: MappedPaginatorInfo | null;
   onPagination: (current: number) => void;
   onSort: (current: any) => void;
   onOrder: (current: string) => void;
@@ -34,7 +34,7 @@ type SortingObjType = {
 
 const ProductList = ({
   products,
-  paginatorInfo,
+  // paginatorInfo,
   onPagination,
   onSort,
   onOrder,
@@ -67,71 +67,73 @@ const ProductList = ({
   let columns = [
     {
       title: t('table:table-item-image'),
-      dataIndex: 'image',
-      key: 'image',
+      dataIndex: 'images',
+      key: 'images',
       align: alignLeft,
       width: 74,
-      render: (image: any, { name }: { name: string }) => (
+      render: (images: any, { productName }: { productName: string }, { profile }: { profile: string }) => {
+        console.log(images)
+        return(
         <Image
-          src={image?.thumbnail ?? siteSettings.product.placeholder}
-          alt={name}
+          src={images?.length? images : profile ?? siteSettings.product.placeholder}
+          alt={productName}
           layout="fixed"
           width={42}
           height={42}
           className="overflow-hidden rounded"
         />
-      ),
+      )},
     },
     {
       title: (
         <TitleWithSort
           title={t('table:table-item-title')}
           ascending={
-            sortingObj.sort === SortOrder.Asc && sortingObj.column === 'name'
+            sortingObj.sort === SortOrder.Asc && sortingObj.column === 'productName'
           }
-          isActive={sortingObj.column === 'name'}
+          isActive={sortingObj.column === 'productName'}
         />
       ),
       className: 'cursor-pointer',
-      dataIndex: 'name',
-      key: 'name',
+      dataIndex: 'productName',
+      key: 'productName',
       align: alignLeft,
       width: 300,
       ellipsis: true,
-      onHeaderCell: () => onHeaderClick('name'),
+      onHeaderCell: () => onHeaderClick('productName'),
     },
-    {
-      title: t('table:table-item-group'),
-      dataIndex: 'type',
-      key: 'type',
-      width: 120,
-      align: 'center',
-      ellipsis: true,
-      render: (type: any) => (
-        <span className="truncate whitespace-nowrap">{type?.name}</span>
-      ),
-    },
-    {
-      title: t('table:table-item-shop'),
-      dataIndex: 'shop',
-      key: 'shop',
-      width: 120,
-      align: 'center',
-      ellipsis: true,
-      render: (shop: Shop) => (
-        <span className="truncate whitespace-nowrap">{shop?.name}</span>
-      ),
-    },
-    {
-      title: 'Product Type',
-      dataIndex: 'product_type',
-      key: 'product_type',
-      width: 120,
-      align: 'center',
-      render: (product_type: string) => (
-        <span className="truncate whitespace-nowrap">{product_type}</span>
-      ),
-    },
+    // {
+    //   title: t('table:table-item-group'),
+    //   dataIndex: 'type',
+    //   key: 'type',
+    //   width: 120,
+    //   align: 'center',
+    //   ellipsis: true,
+    //   render: (type: any) => (
+    //     <span className="truncate whitespace-nowrap">{type?.name}</span>
+    //   ),
+    // },
+    // {
+    //   title: t('table:table-item-shop'),
+    //   dataIndex: 'shop',
+    //   key: 'shop',
+    //   width: 120,
+    //   align: 'center',
+    //   ellipsis: true,
+    //   render: (shop: Shop) => (
+    //     <span className="truncate whitespace-nowrap">{shop?.name}</span>
+    //   ),
+    // },
+    // {
+    //   title: 'Product Type',
+    //   dataIndex: 'product_type',
+    //   key: 'product_type',
+    //   width: 120,
+    //   align: 'center',
+    //   render: (product_type: string) => (
+    //     <span className="truncate whitespace-nowrap">{product_type}</span>
+    //   ),
+    // },
     {
       title: (
         <TitleWithSort
@@ -178,19 +180,19 @@ const ProductList = ({
           title={t('table:table-item-quantity')}
           ascending={
             sortingObj.sort === SortOrder.Asc &&
-            sortingObj.column === 'quantity'
+            sortingObj.column === 'stock'
           }
-          isActive={sortingObj.column === 'quantity'}
+          isActive={sortingObj.column === 'stock'}
         />
       ),
       className: 'cursor-pointer',
-      dataIndex: 'quantity',
-      key: 'quantity',
+      dataIndex: 'stock',
+      key: 'stock',
       align: 'center',
       width: 150,
-      onHeaderCell: () => onHeaderClick('quantity'),
-      render: (quantity: number) => {
-        if (quantity < 2) {
+      onHeaderCell: () => onHeaderClick('stock'),
+      render: (stock: number) => {
+        if (stock < 1) {
           return (
             <Badge
               text={t('common:text-out-of-stock')}
@@ -198,7 +200,7 @@ const ProductList = ({
             />
           );
         }
-        return <span>{quantity}</span>;
+        return <span>{stock}</span>;
       },
     },
     {
@@ -267,7 +269,7 @@ const ProductList = ({
         />
       </div>
 
-      {!!paginatorInfo?.total && (
+      {/* {!!paginatorInfo?.total && (
         <div className="flex items-center justify-end">
           <Pagination
             total={paginatorInfo.total}
@@ -277,7 +279,7 @@ const ProductList = ({
             showLessItems
           />
         </div>
-      )}
+      )} */}
     </>
   );
 };

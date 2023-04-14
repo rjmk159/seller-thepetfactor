@@ -41,7 +41,6 @@ const CouponList = ({
   const { t } = useTranslation();
   const router = useRouter();
 
-  console.log(coupons, 'cop data')
   const [sortingObj, setSortingObj] = useState<{
     sort: SortOrder;
     column: string | null;

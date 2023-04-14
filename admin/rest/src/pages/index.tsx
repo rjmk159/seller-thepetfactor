@@ -7,7 +7,7 @@ import {
   hasAccess,
   isAuthenticated,
 } from '@/utils/auth-utils';
-import { SUPER_ADMIN } from '@/utils/constants';
+import { SELLER, SUPER_ADMIN } from '@/utils/constants';
 import AppLayout from '@/components/layouts/app';
 import { Routes } from '@/config/routes';
 import { Config } from '@/config';
@@ -20,7 +20,7 @@ export default function Dashboard({
 }: {
   userPermissions: string[];
 }) {
-  if (userPermissions?.includes(SUPER_ADMIN)) {
+  if (userPermissions?.includes(SELLER)) {
     return <AdminDashboard />;
   }
   return <OwnerDashboard />;

@@ -11,7 +11,7 @@ import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { Routes } from '@/config/routes';
 import { SortOrder } from '@/types';
-import { adminOnly } from '@/utils/auth-utils';
+import { sellerOnly } from '@/utils/auth-utils';
 
 export default function Customers() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -75,7 +75,7 @@ export default function Customers() {
 }
 
 Customers.authenticate = {
-  permissions: adminOnly,
+  permissions: sellerOnly,
 };
 Customers.Layout = Layout;
 

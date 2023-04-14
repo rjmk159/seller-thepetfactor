@@ -104,3 +104,7 @@ export const useProductsQuery = (
     loading: isLoading,
   };
 };
+
+export const useAllProductQuery = () => {
+  return useMutation(productClient.getProducts);
+};

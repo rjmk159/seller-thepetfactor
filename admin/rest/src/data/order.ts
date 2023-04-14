@@ -2,7 +2,7 @@ import { useQuery } from 'react-query';
 import { useMutation, useQueryClient } from 'react-query';
 import { toast } from 'react-toastify';
 import { useTranslation } from 'next-i18next';
-import { API_ENDPOINTS } from '@/data/client/api-endpoints';
+import { API_ENDPOINTS, API_ENDPOINTS_V2 } from '@/data/client/api-endpoints';
 import { mapPaginatorData } from '@/utils/data-mappers';
 import {
   OrderQueryOptions,
@@ -19,41 +19,19 @@ export const useOrdersQuery = (
   params: Partial<OrderQueryOptions>,
   options: any = {}
 ) => {
-  const { data, error, isLoading } = useQuery<OrderPaginator, Error>(
-    [API_ENDPOINTS.ORDERS, params],
-    ({ queryKey, pageParam }) =>
-      orderClient.paginated(Object.assign({}, queryKey[1], pageParam)),
-    {
-      keepPreviousData: true,
-      ...options,
-    }
+  const { data, error, isLoading } = useQuseuseuery<any>(
+    [API_ENDPOINTS_V2.STORE_ORDERS, params]
   );
   return {
     orders: data?.data ?? [],
-    paginatorInfo: mapPaginatorData(data),
     error,
     loading: isLoading,
   };
 };
-
-export const useOrderQuery = ({
-  id,
-  language,
-}: {
-  id: string;
-  language: string;
-}) => {
-  const { data, error, isLoading } = useQuery<Order, Error>(
-    [API_ENDPOINTS.ORDERS, { id, language }],
-    () => orderClient.get({ id, language })
-  );
-
-  return {
-    order: data,
-    error,
-    isLoading,
-  };
+export const useAllOrdersQuery = () => {
+  return useMutation(orderClient.getOrders);
 };
+
 
 // export const useCreateOrderMutation = () => {
 //   return useMutation(orderClient.create);

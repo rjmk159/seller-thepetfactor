@@ -14,13 +14,16 @@ import {
   QueryOptionsType,
   UserPaginator,
   UserQueryOptions,
+  UserInput,
 } from '@/types';
-import { API_ENDPOINTS } from './api-endpoints';
+import { API_ENDPOINTS, API_ENDPOINTS_V2 } from './api-endpoints';
 import { HttpClient } from './http-client';
+import { HttpClientV2 } from './http-client-v2';
+
 
 export const userClient = {
-  me: () => {
-    return HttpClient.get<User>(API_ENDPOINTS.ME);
+  me: (variables: UserInput) => {
+    return HttpClientV2.post<any>(API_ENDPOINTS_V2.ME, variables);
   },
   login: (variables: LoginInput) => {
     return HttpClient.post<AuthResponse>(API_ENDPOINTS.TOKEN, variables);
@@ -72,4 +75,8 @@ export const userClient = {
   fetchUser: ({ id }: { id: string }) => {
     return HttpClient.get<User>(`${API_ENDPOINTS.USERS}/${id}`);
   },
+  // New End points
+  login_normal: (variables: LoginInput) => {
+    return HttpClientV2.post<AuthResponse>(API_ENDPOINTS_V2.NORMAL_LOGIN, variables);
+  }
 };

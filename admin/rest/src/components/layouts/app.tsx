@@ -1,4 +1,4 @@
-import { SUPER_ADMIN } from '@/utils/constants';
+import { SELLER, SUPER_ADMIN } from '@/utils/constants';
 import dynamic from 'next/dynamic';
 
 const AdminLayout = dynamic(() => import('@/components/layouts/admin'));
@@ -10,7 +10,7 @@ export default function AppLayout({
 }: {
   userPermissions: string[];
 }) {
-  if (userPermissions?.includes(SUPER_ADMIN)) {
+  if (userPermissions?.includes(SELLER)) {
     return <AdminLayout {...props} />;
   }
   return <OwnerLayout {...props} />;

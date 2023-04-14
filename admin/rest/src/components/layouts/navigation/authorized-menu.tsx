@@ -1,23 +1,30 @@
 import cn from 'classnames';
-import { Fragment } from 'react';
+import { Fragment, useEffect } from 'react';
 import { Menu, Transition } from '@headlessui/react';
 import Avatar from '@/components/common/avatar';
 import Link from '@/components/ui/link';
 import { siteSettings } from '@/settings/site.settings';
 import { useTranslation } from 'next-i18next';
 import { useMeQuery } from '@/data/user';
+import { getAuthCredentials } from '@/utils/auth-utils';
 
 export default function AuthorizedMenu() {
-  const { data } = useMeQuery();
-  const { t } = useTranslation('common');
+  const { mutate, data, isLoading: loading, isError: error } = useMeQuery();
 
+
+  useEffect(() => {
+    const userId = getAuthCredentials()?.userId;
+    mutate({ userId });
+  }, []);
+  const { t } = useTranslation('common');
+  console.log(data)
   // Again, we're using framer-motion for the transition effect
   return (
     <Menu as="div" className="relative inline-block text-left">
       <Menu.Button className="flex items-center focus:outline-none">
         <Avatar
           src={
-            data?.profile?.avatar?.thumbnail ??
+            data?.images?.length ? data?.images: data?.data?.profile ??
             siteSettings?.avatar?.placeholder
           }
           alt="avatar"
@@ -37,13 +44,13 @@ export default function AuthorizedMenu() {
           as="ul"
           className="end-0 origin-top-end absolute mt-1 w-48 rounded bg-white shadow-md focus:outline-none"
         >
-          <Menu.Item key={data?.email}>
+          <Menu.Item key={data?.data?.email}>
             <li
               className="flex w-full flex-col space-y-1 rounded-t
-             bg-[#00b791] px-4 py-3 text-sm text-white"
+             bg-[#e75c25] px-4 py-3 text-sm text-white"
             >
-              <span className="font-semibold capitalize">{data?.name}</span>
-              <span className="text-xs">{data?.email}</span>
+              <span className="font-semibold capitalize">{data?.data?.fullName}</span>
+              <span className="text-xs">{data?.data?.email}</span>
             </li>
           </Menu.Item>
 

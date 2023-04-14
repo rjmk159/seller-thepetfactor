@@ -11,11 +11,11 @@ import { User, QueryOptionsType, UserPaginator } from '@/types';
 import { mapPaginatorData } from '@/utils/data-mappers';
 
 export const useMeQuery = () => {
-  return useQuery<User, Error>([API_ENDPOINTS.ME], userClient.me);
+  return useMutation(userClient.me);
 };
 
 export function useLogin() {
-  return useMutation(userClient.login);
+  return useMutation(userClient.login_normal);
 }
 
 export const useLogoutMutation = () => {

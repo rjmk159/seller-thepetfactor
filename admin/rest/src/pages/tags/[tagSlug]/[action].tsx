@@ -5,7 +5,7 @@ import Loader from '@/components/ui/loader/loader';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import CreateOrUpdateTagForm from '@/components/tag/tag-form';
-import { adminOnly } from '@/utils/auth-utils';
+import { sellerOnly } from '@/utils/auth-utils';
 import { useTagQuery } from '@/data/tag';
 import { Config } from '@/config';
 
@@ -34,7 +34,7 @@ export default function UpdateTagPage() {
   );
 }
 UpdateTagPage.authenticate = {
-  permissions: adminOnly,
+  permissions: sellerOnly,
 };
 UpdateTagPage.Layout = Layout;
 

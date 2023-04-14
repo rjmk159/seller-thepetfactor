@@ -5,7 +5,7 @@ import Loader from '@/components/ui/loader/loader';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import WithdrawList from '@/components/withdraw/withdraw-list';
-import { adminOnly } from '@/utils/auth-utils';
+import { sellerOnly } from '@/utils/auth-utils';
 import { useWithdrawsQuery } from '@/data/withdraw';
 import { useState } from 'react';
 import { SortOrder } from '@/types';
@@ -50,7 +50,7 @@ export default function WithdrawsPage() {
   );
 }
 WithdrawsPage.authenticate = {
-  permissions: adminOnly,
+  permissions: sellerOnly,
 };
 WithdrawsPage.Layout = Layout;
 

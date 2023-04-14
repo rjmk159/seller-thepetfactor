@@ -3,6 +3,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import '@/assets/css/main.css';
 import { UIProvider } from '@/contexts/ui.context';
 import { SettingsProvider } from '@/contexts/settings.context';
+import { StoreProvider } from '@/contexts/storeConfig.context';
 import ErrorMessage from '@/components/ui/error-message';
 import PageLoader from '@/components/ui/page-loader/page-loader';
 import { ToastContainer } from 'react-toastify';
@@ -50,26 +51,28 @@ const CustomApp = ({ Component, pageProps }: AppPropsWithLayout) => {
         <Hydrate state={pageProps.dehydratedState}>
           <AppSettings>
             <UIProvider>
-              <ModalProvider>
-                <>
-                  <CartProvider>
-                    <DefaultSeo />
-                    {authProps ? (
-                      <PrivateRoute authProps={authProps}>
+              <StoreProvider>
+                <ModalProvider>
+                  <>
+                    <CartProvider>
+                      <DefaultSeo />
+                      {authProps ? (
+                        <PrivateRoute authProps={authProps}>
+                          <Layout {...pageProps}>
+                            <Component {...pageProps} />
+                          </Layout>
+                        </PrivateRoute>
+                      ) : (
                         <Layout {...pageProps}>
                           <Component {...pageProps} />
                         </Layout>
-                      </PrivateRoute>
-                    ) : (
-                      <Layout {...pageProps}>
-                        <Component {...pageProps} />
-                      </Layout>
-                    )}
-                    <ToastContainer autoClose={2000} theme="colored" />
-                    <ManagedModal />
-                  </CartProvider>
-                </>
-              </ModalProvider>
+                      )}
+                      <ToastContainer autoClose={2000} theme="colored" />
+                      <ManagedModal />
+                    </CartProvider>
+                  </>
+                </ModalProvider>
+              </StoreProvider>
             </UIProvider>
           </AppSettings>
           <ReactQueryDevtools />

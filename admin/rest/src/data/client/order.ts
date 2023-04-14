@@ -7,9 +7,10 @@ import {
   InvoiceTranslatedText,
   GenerateInvoiceDownloadUrlInput,
 } from '@/types';
-import { API_ENDPOINTS } from './api-endpoints';
+import { API_ENDPOINTS, API_ENDPOINTS_V2 } from './api-endpoints';
 import { crudFactory } from './curd-factory';
 import { HttpClient } from './http-client';
+import { HttpClientV2 } from './http-client-v2';
 
 export const orderClient = {
   ...crudFactory<Order, QueryOptions, CreateOrderInput>(API_ENDPOINTS.ORDERS),
@@ -31,4 +32,9 @@ export const orderClient = {
       input
     );
   },
+  getOrders(variables: any) {
+    console.log(variables);
+    return HttpClientV2.get<any>(`${API_ENDPOINTS_V2.STORE_ORDERS}${variables.id}`);
+  },
+
 };

@@ -6,6 +6,7 @@ import { NavbarIcon } from '@/components/icons/navbar-icon';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'next-i18next';
 import { Routes } from '@/config/routes';
+import { useSettings } from '@/contexts/settings.context';
 import {
   adminAndOwnerOnly,
   getAuthCredentials,
@@ -13,11 +14,13 @@ import {
 } from '@/utils/auth-utils';
 import LanguageSwitcher from './language-switer';
 import { Config } from '@/config';
+import { useStore } from '@/contexts/storeConfig.context';
+import Link from 'next/link';
 
 const Navbar = () => {
   const { t } = useTranslation();
   const { toggleSidebar } = useUI();
-
+  const { currentStore } = useStore();
   const { permissions } = getAuthCredentials();
 
   const { enableMultiLang } = Config;
@@ -34,11 +37,17 @@ const Navbar = () => {
           <NavbarIcon />
         </motion.button>
 
-        <div className="ms-5 me-auto hidden md:flex">
+        <div className="hidden ms-5 me-auto md:flex">
           <Logo />
         </div>
 
-        <div className="space-s-8 flex items-center">
+        <div className="flex items-center space-s-8 current-store ml-20 hidden text-sm font-semibold capitalize text-heading md:flex"
+>
+          <Link
+            href={Routes.adminMyShops}
+          >
+            {currentStore?.storeName}
+          </Link>
           {hasAccess(adminAndOwnerOnly, permissions) && (
             <LinkButton
               href={Routes.shop.create}

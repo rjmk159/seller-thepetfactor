@@ -55,3 +55,11 @@ export const API_ENDPOINTS = {
   ORDER_CREATE: 'order/create',
   ORDER_INVOICE_DOWNLOAD: 'download-invoice-url',
 };
+
+export const API_ENDPOINTS_V2 = {
+  NORMAL_LOGIN: 'api/vet/v1/loginNormalUser',
+  PRODUCTS: 'api/Product/v1/getAllProductsByStoreId',
+  ME: 'api/vet/v1/getUser',
+  STORES: 'api/stores/v1/getSellerAllStores',
+  STORE_ORDERS: 'api/Orders/v1/fetchStoreOrdersById/'
+};  

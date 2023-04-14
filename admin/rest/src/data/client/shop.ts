@@ -4,11 +4,13 @@ import {
   ShopInput,
   ShopPaginator,
   ShopQueryOptions,
+  StoreInput,
 } from '@/types';
 import { ApproveShopInput } from '@/types';
-import { API_ENDPOINTS } from './api-endpoints';
+import { API_ENDPOINTS, API_ENDPOINTS_V2 } from './api-endpoints';
 import { HttpClient } from './http-client';
 import { crudFactory } from './curd-factory';
+import { HttpClientV2 } from './http-client-v2';
 
 export const shopClient = {
   ...crudFactory<Shop, QueryOptions, ShopInput>(API_ENDPOINTS.SHOPS),
@@ -30,5 +32,8 @@ export const shopClient = {
       API_ENDPOINTS.DISAPPROVE_SHOP,
       variables
     );
+  },
+  getStores: (variables: StoreInput) => {
+    return HttpClientV2.post<any>(API_ENDPOINTS_V2.STORES, variables);
   },
 };
